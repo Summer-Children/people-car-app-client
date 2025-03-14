@@ -12,7 +12,9 @@
       "@/*": ["./*"],
       "@gqlgen": ["./src/_gqlgen"],
       "@gqlgen/*": ["./src/_gqlgen/*"],
-      "@src/*": ["./src/*"]
+      "@src/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@api/*": ["./src/api/*"],
     }
   },
   "files": [],
