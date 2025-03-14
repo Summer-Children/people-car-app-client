@@ -10,7 +10,7 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/people/:id" element={<ShowPage />} />
+                    <Route path="/person/:id" element={<ShowPage />} />
                 </Routes>
             </Router>
         </ApolloProvider>
