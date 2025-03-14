@@ -1,30 +1,20 @@
-import { gql, useQuery } from '@apollo/client';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import client from './apolloClient';
+import HomePage from './components/pages/HomePage';
+import ShowPage from './components/pages/ShowPage';
 
-
-interface Person {
-    id: string;
-    firstName: string;
-    lastName: string;
-}
-
-function App() {
-    const { loading, error, data } = useQuery<{ people: Person[] }>(GET_PEOPLE);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
+const App = () => {
     return (
-        <div>
-            <h1>People List</h1>
-            <ul>
-                {data?.people.map((person) => (
-                    <li key={person.id}>
-                        {person.firstName} {person.lastName}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <ApolloProvider client={client}>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/people/:id" element={<ShowPage />} />
+                </Routes>
+            </Router>
+        </ApolloProvider>
     );
-}
+};
 
 export default App;
