@@ -1,9 +1,10 @@
 import { Card, Button, Empty, Popconfirm, Input, Form, Modal } from "antd";
 import { useMutation } from "@apollo/client";
-import { DELETE_PERSON, GET_PEOPLE, UPDATE_PERSON } from "../../api/index";
-import {CarCard} from "./index";
+import { DELETE_CAR, DELETE_PERSON, GET_CARS, GET_PEOPLE, UPDATE_PERSON } from "../../api/index";
+import { CarCard } from "./index";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface PersonCardProps {
   person: {
@@ -26,7 +27,7 @@ interface PersonCardProps {
   }[];
 }
 
-const PersonCard = ({ person, cars, peopleData }: PersonCardProps) => {
+const PersonCard = ({ person, cars, peopleData}: PersonCardProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editedFirstName, setEditedFirstName] = useState(person.firstName);
   const [editedLastName, setEditedLastName] = useState(person.lastName);
@@ -39,7 +40,11 @@ const PersonCard = ({ person, cars, peopleData }: PersonCardProps) => {
     refetchQueries: [{ query: GET_PEOPLE }],
   });
 
-  const handleEdit = () => {
+  const[deleteCar] = useMutation(DELETE_CAR, {
+    refetchQueries: [{ query: GET_CARS }],
+  });
+
+  const handleEditPerson = () => {
     editPerson({
       variables: {
         id: person.id,
@@ -50,8 +55,11 @@ const PersonCard = ({ person, cars, peopleData }: PersonCardProps) => {
     setIsModalVisible(false);
   };
 
-  const handleDelete = () => {
+  const handleDeletePerson = () => {
     deletePerson({ variables: { id: person.id } });
+    cars.forEach((car) => {
+      deleteCar({ variables: { id: car.id } });
+    });
   };
 
   return (
@@ -66,7 +74,7 @@ const PersonCard = ({ person, cars, peopleData }: PersonCardProps) => {
           />
           <Popconfirm
             title="Are you sure you want to delete this person?"
-            onConfirm={handleDelete}
+            onConfirm={handleDeletePerson}
             okText="Yes"
             cancelText="No"
           >
@@ -82,15 +90,18 @@ const PersonCard = ({ person, cars, peopleData }: PersonCardProps) => {
       {cars.length === 0 ? (
         <Empty description="No cars available" />
       ) : (
-        cars.map((car) => <CarCard key={car.id} car={car} peopleData={peopleData} />)
+        cars.map((car) => (
+          <CarCard key={car.id} car={car} peopleData={peopleData} />
+        ))
       )}
-
-      <Button type="link">Learn More</Button>
-
+      
+        <Link to={`/person/${person.id}`}>
+          <Button type="link">Learn More</Button>
+        </Link>
       <Modal
         title="Edit Person"
         open={isModalVisible}
-        onOk={handleEdit}
+        onOk={handleEditPerson}
         onCancel={() => setIsModalVisible(false)}
         okText="Save"
         cancelText="Cancel"
