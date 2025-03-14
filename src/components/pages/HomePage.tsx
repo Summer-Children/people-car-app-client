@@ -67,7 +67,7 @@ const HomePage = () => {
             onChange={(e) => setLastName(e.target.value)}
             addonBefore={"Last Name"}
           />
-          <Button type="primary" onClick={handleAddPerson}>
+          <Button type="primary" onClick={handleAddPerson} disabled={!firstName.trim() || !lastName.trim()} >
             Add Person
           </Button>
         </div>

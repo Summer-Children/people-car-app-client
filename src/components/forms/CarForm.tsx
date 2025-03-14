@@ -123,6 +123,10 @@ const CarForm: React.FC<CarFormProps> = ({
       <Button
         type="primary"
         onClick={onSubmit === "handleAddCar" ? handleAddCar : handleEditCar}
+        disabled={
+          buttonText === "Add Car" &&
+          (!car.year || !car.make.trim() || !car.model.trim() || !car.price || !car.personId.trim())
+        }
       >
         {buttonText}
       </Button>
