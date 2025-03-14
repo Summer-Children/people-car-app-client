@@ -10,12 +10,19 @@ export const GET_PEOPLE = graphql(`
     }
 `);
 
-export const GET_PERSON = graphql(`
-    query GetPerson($id: ID!) {
-        person(id: $id) {
+export const GET_PERSON_WITH_CARS = graphql(`
+    query GetPersonWithCars($id: ID!) {
+        personWithcars(id: $id) {
             id
             firstName
             lastName
+            cars {
+                id
+                year
+                make
+                model
+                price
+            }
         }
     }
 `);

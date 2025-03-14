@@ -12,16 +12,3 @@ export const GET_CARS = graphql(`
         }
     }
 `);
-
-export const GET_CAR = graphql(`
-    query GetCar($id: ID!) {
-        car(id: $id) {
-            id
-            year
-            make
-            model
-            price
-            personId
-        }
-    }
-`);
